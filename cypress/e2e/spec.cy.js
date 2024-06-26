@@ -56,4 +56,49 @@ describe('template spec', () => {
     cy.get('.todo-list li')
       .should('have.length', 2);
   });
+
+  it('Marca uma tarefa como completa', () => {
+    cy.visit('http://127.0.0.1:7001');
+
+    cy.get('.new-todo')
+      .type('Tarefa a ser marcada como completa{enter}');
+
+    cy.get('.todo-list li .toggle')
+      .first()
+      .click();
+
+    cy.get('.todo-list li.completed')
+      .should('have.length', 1);
+  });
+
+  it('Marca todas as tarefas como completas', () => {
+    cy.visit('http://127.0.0.1:7001');
+
+    cy.get('.new-todo')
+      .type('Tarefa a ser marcada como completa{enter}')
+      .type('Outra tarefa a ser marcada como completa{enter}');
+
+    cy.get('.toggle-all + label')
+      .click();
+    
+    cy.get('.todo-list li.completed')
+      .should('have.length', 2);
+  });
+
+  it('Limpa todas as tarefas completas', () => {
+    cy.visit('http://127.0.0.1:7001');
+
+    cy.get('.new-todo')
+      .type('Tarefa a ser marcada como completa{enter}')
+      .type('Outra tarefa a ser marcada como completa{enter}');
+
+    cy.get('.toggle-all + label')
+      .click();
+
+    cy.get('.clear-completed')
+      .click();
+
+    cy.get('.todo-list li')
+      .should('have.length', 0);
+  });
 });
